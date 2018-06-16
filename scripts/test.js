@@ -71,4 +71,18 @@ module.exports = robot => {
     robot.messageRoom(roomId, `I have a secret: ${secret}`);
     res.send('OK');
   });
+
+
+  // Events
+  robot.hear(/hubot/i, res => {
+    robot.emit("called", {
+      user: {}, // should be a hubot user/room object to notify them
+      description: "someone called me"
+    });
+  });
+
+  // this can be separated into another file
+  robot.on("called", payload => {
+    robot.send(payload.user, payload.description);
+  });
 };
