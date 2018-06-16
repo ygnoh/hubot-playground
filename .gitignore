@@ -4,3 +4,4 @@ node_modules
 .idea
 *.xml
 *.iml
+private.js

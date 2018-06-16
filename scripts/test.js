@@ -1,3 +1,5 @@
+const PRIVATE = require('./private');
+
 module.exports = robot => {
   // hear: anytime a message's text matches
   robot.hear(/javascript/i, res => {
@@ -37,5 +39,23 @@ module.exports = robot => {
     } else {
       res.reply(`Opening ${doorType} doors`);
     }
+  });
+
+  // HTTP calls
+  robot.respond(/how is the weather today in (.*)/i, res => {
+    const region = res.match[1];
+
+    // I'm using 'https://openweathermap.org/current'
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${region}
+      &units=metric&appid=${PRIVATE.WHEATER_API_ID}`;
+
+    robot.http(url).get()((err, response, body) => {
+      body = JSON.parse(body);
+      const weather = body.weather[0].main;
+      const { temp, humidity } = body.main;
+
+      res.send(`${region}'s weather:`);
+      res.send(`${temp}°C ${humidity}% ${weather}`);
+    });
   });
 };
