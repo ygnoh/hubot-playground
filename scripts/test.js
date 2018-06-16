@@ -19,4 +19,11 @@ module.exports = robot => {
     // TODO: I have no idea what emote is for yet
     res.emote('this is a response to emote!!');
   });
+
+
+  // Messages can be sent to a specified room or user using the messageRoom function.
+  robot.hear(/send to myroom/i, res => {
+    const roomName = 'myroom';
+    res.messageRoom(roomName, 'You\'ve got a message from someone.');
+  });
 };
