@@ -58,4 +58,17 @@ module.exports = robot => {
       res.send(`${temp}°C ${humidity}% ${weather}`);
     });
   });
+
+  /**
+   * HTTP listener and test curl:
+   * curl -X POST -H "Content-Type: application/json" -d '{"secret":"C-TECH Astronomy"}' http://127.0.0.1:8080/hubot/room/1
+   */
+  robot.router.post('/room/:room_id', (req, res) => {
+    const roomId = req.params.room_id;
+    const data = req.body.payload ? JSON.parse(req.body.payload) : req.body;
+    const { secret } = data;
+
+    robot.messageRoom(roomId, `I have a secret: ${secret}`);
+    res.send('OK');
+  });
 };
